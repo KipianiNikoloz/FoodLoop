@@ -3,6 +3,9 @@
 import { useActionState } from "react";
 import { useFormStatus } from "react-dom";
 import { initialWaitlistState, joinWaitlist } from "@/app/actions/waitlist";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 
 type WaitlistFormProps = {
   id: string;
@@ -13,9 +16,9 @@ function SubmitButton() {
   const { pending } = useFormStatus();
 
   return (
-    <button className="submitButton" type="submit" disabled={pending}>
-      {pending ? "იგზავნება..." : "სიაში ჩაწერა"}
-    </button>
+    <Button className="submitButton" type="submit" disabled={pending}>
+      {pending ? "იგზავნება..." : "შემომიერთდი სიაში"}
+    </Button>
   );
 }
 
@@ -25,25 +28,23 @@ export function WaitlistForm({ id, variant = "hero" }: WaitlistFormProps) {
 
   return (
     <form id={id} className={`waitlistForm waitlistForm-${variant}`} action={formAction}>
-      <div className="roleGroup" aria-label="აირჩიეთ როლი">
-        <label>
-          <input type="radio" name="role" value="user" defaultChecked />
-          <span>მომხმარებელი</span>
-        </label>
-        <label>
-          <input type="radio" name="role" value="partner" />
-          <span>ბიზნესი</span>
-        </label>
-      </div>
+      <RadioGroup className="roleGroup" aria-label="აირჩიეთ როლი">
+        <RadioGroupItem name="role" value="user" defaultChecked>
+          მომხმარებელი
+        </RadioGroupItem>
+        <RadioGroupItem name="role" value="partner">
+          ბიზნესი
+        </RadioGroupItem>
+      </RadioGroup>
       <div className="emailRow">
         <label className="srOnly" htmlFor={`${id}-email`}>
           ელფოსტა
         </label>
-        <input
+        <Input
           id={`${id}-email`}
           name="email"
           type="email"
-          placeholder="თქვენი ელფოსტა"
+          placeholder="თქვენი ელ. ფოსტა"
           autoComplete="email"
           required
         />

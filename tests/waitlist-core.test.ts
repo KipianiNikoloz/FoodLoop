@@ -33,7 +33,7 @@ test("stores valid partner signup", async () => {
   }));
 
   assert.equal(result.status, "success");
-  assert.match(result.message, /პარტნიორების/);
+  assert.match(result.message, /პარტნიორების სიაში/);
 });
 
 test("rejects invalid email before insert", async () => {
