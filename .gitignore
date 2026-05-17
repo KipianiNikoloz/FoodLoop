@@ -1,0 +1,116 @@
+# Dependencies
+node_modules/
+vendor/
+
+# Environment and secrets
+.env
+.env.*
+!.env.example
+!.env.sample
+*.local
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# Build outputs
+dist/
+build/
+out/
+public/build/
+.next/
+.nuxt/
+.svelte-kit/
+.astro/
+.vite/
+coverage/
+.nyc_output/
+
+# Test and cache artifacts
+.cache/
+.parcel-cache/
+.turbo/
+.eslintcache
+.stylelintcache
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+.tox/
+.nox/
+htmlcov/
+test-results/
+playwright-report/
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+.Python
+.venv/
+venv/
+env/
+ENV/
+pip-wheel-metadata/
+*.egg-info/
+.eggs/
+
+# TypeScript
+*.tsbuildinfo
+
+# Package manager stores
+.pnpm-store/
+.yarn/*
+!.yarn/releases/
+!.yarn/plugins/
+!.yarn/sdks/
+!.yarn/versions/
+
+# Runtime data
+*.pid
+*.seed
+*.pid.lock
+
+# Databases and local storage
+*.sqlite
+*.sqlite3
+*.db
+*.db-journal
+
+# Docker and local infrastructure
+.docker/
+docker-compose.override.yml
+
+# Editor and IDE files
+.vscode/*
+!.vscode/extensions.json
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln.docstates
+
+# OS files
+.DS_Store
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# Temporary files
+tmp/
+temp/
+*.tmp
+*.temp
+*.swp
+*.swo
+*~
+
+# Agent artifacts
+.codex
