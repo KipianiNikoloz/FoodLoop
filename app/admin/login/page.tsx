@@ -30,6 +30,19 @@ function getLoginRedirect(params: Record<string, string>) {
   return `/admin/login?${searchParams.toString()}`;
 }
 
+function getRequestOrigin(requestHeaders: Headers) {
+  const origin = requestHeaders.get("origin");
+
+  if (origin) {
+    return origin;
+  }
+
+  const host = requestHeaders.get("x-forwarded-host") ?? requestHeaders.get("host");
+  const protocol = requestHeaders.get("x-forwarded-proto") ?? "https";
+
+  return host ? `${protocol}://${host}` : null;
+}
+
 async function sendMagicLink(formData: FormData) {
   "use server";
 
@@ -44,7 +57,7 @@ async function sendMagicLink(formData: FormData) {
 
     try {
       const requestHeaders = await headers();
-      const siteUrl = getConfiguredSiteUrl(requestHeaders.get("origin"));
+      const siteUrl = getConfiguredSiteUrl(getRequestOrigin(requestHeaders));
       const supabase = await createClient();
       const { error } = await supabase.auth.signInWithOtp({
         email,

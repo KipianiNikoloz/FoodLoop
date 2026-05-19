@@ -39,6 +39,8 @@ In the Magic Link email template, use `RedirectTo` plus the token hash so Supaba
 </a>
 ```
 
+Do not use `{{ .SiteURL }}/auth/confirm...` in this template unless Supabase Site URL is definitely set to the production domain. `{{ .RedirectTo }}` is safer because the app sends the exact callback origin when requesting the magic link.
+
 Admins sign in at `/admin/login`. Only emails listed in `ADMIN_EMAILS` can view received waitlist rows.
 
 ## Deployment Checklist
