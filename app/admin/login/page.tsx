@@ -1,10 +1,11 @@
 import Link from "next/link";
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
-import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { isAdminEmail } from "@/lib/admin-auth";
+import { getConfiguredSiteUrl } from "@/lib/site-url";
 import { createClient } from "@/lib/supabase/server";
+import { AdminLoginSubmitButton } from "./SubmitButton";
 
 export const dynamic = "force-dynamic";
 
@@ -24,26 +25,44 @@ function isValidEmail(email: string) {
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
 }
 
+function getLoginRedirect(params: Record<string, string>) {
+  const searchParams = new URLSearchParams(params);
+  return `/admin/login?${searchParams.toString()}`;
+}
+
 async function sendMagicLink(formData: FormData) {
   "use server";
 
   const email = normalizeEmail(formData.get("email"));
 
   if (!isValidEmail(email)) {
-    redirect("/admin/login?error=invalid-email");
+    redirect(getLoginRedirect({ error: "invalid-email", email }));
   }
 
   if (isAdminEmail(email)) {
-    const requestHeaders = await headers();
-    const origin = requestHeaders.get("origin") ?? "http://localhost:3000";
-    const supabase = await createClient();
+    let sendFailed = false;
 
-    await supabase.auth.signInWithOtp({
-      email,
-      options: {
-        emailRedirectTo: `${origin}/auth/confirm?next=/admin`,
-      },
-    });
+    try {
+      const requestHeaders = await headers();
+      const siteUrl = getConfiguredSiteUrl(requestHeaders.get("origin"));
+      const supabase = await createClient();
+      const { error } = await supabase.auth.signInWithOtp({
+        email,
+        options: {
+          emailRedirectTo: `${siteUrl}/auth/confirm?next=/admin`,
+        },
+      });
+
+      if (error) {
+        sendFailed = true;
+      }
+    } catch {
+      sendFailed = true;
+    }
+
+    if (sendFailed) {
+      redirect(getLoginRedirect({ error: "send-failed", email }));
+    }
   }
 
   redirect(`/admin/login?sent=1&email=${encodeURIComponent(email)}`);
@@ -59,13 +78,13 @@ export default async function AdminLoginPage({ searchParams }: AdminLoginPagePro
           FoodLoop
         </Link>
         <div>
-          <p className="adminEyebrow">Admin</p>
-          <h1 id="admin-login-title">Sign in to view received emails</h1>
-          <p className="adminLead">Enter an allowlisted admin email. Supabase will send a secure magic link.</p>
+          <p className="adminEyebrow">ადმინი</p>
+          <h1 id="admin-login-title">შედით მიღებული ელფოსტების სანახავად</h1>
+          <p className="adminLead">შეიყვანეთ ადმინისტრატორის ელფოსტა. Supabase გამოგიგზავნით უსაფრთხო შესვლის ბმულს.</p>
         </div>
 
         <form className="adminLoginForm" action={sendMagicLink}>
-          <label htmlFor="admin-email">Email</label>
+          <label htmlFor="admin-email">ელფოსტა</label>
           <Input
             id="admin-email"
             name="email"
@@ -75,18 +94,30 @@ export default async function AdminLoginPage({ searchParams }: AdminLoginPagePro
             placeholder="admin@example.com"
             required
           />
-          <Button type="submit">Send magic link</Button>
+          <AdminLoginSubmitButton />
         </form>
 
         {params.sent ? (
           <p className="adminNotice adminNotice-positive" role="status">
-            If that email is configured as an admin, a magic link is on its way.
+            თუ ეს ელფოსტა ადმინისტრატორად არის დამატებული, შესვლის ბმული უკვე გაიგზავნა. შეამოწმეთ შემოსული წერილები.
           </p>
         ) : null}
 
         {params.error === "invalid-email" ? (
           <p className="adminNotice" role="alert">
-            Enter a valid email address.
+            შეიყვანეთ სწორი ელფოსტის მისამართი.
+          </p>
+        ) : null}
+
+        {params.error === "send-failed" ? (
+          <p className="adminNotice" role="alert">
+            ბმულის გაგზავნა ვერ მოხერხდა. შეამოწმეთ Supabase-ის პარამეტრები და სცადეთ თავიდან.
+          </p>
+        ) : null}
+
+        {params.error === "auth" ? (
+          <p className="adminNotice" role="alert">
+            შესვლის ბმული არასწორია ან ვადა გაუვიდა. მოითხოვეთ ახალი ბმული.
           </p>
         ) : null}
       </section>

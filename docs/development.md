@@ -19,11 +19,12 @@ Add these values to `.env.local`:
 ```env
 NEXT_PUBLIC_SUPABASE_URL=...
 NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY=...
+NEXT_PUBLIC_SITE_URL=http://localhost:3000
 SUPABASE_SERVICE_ROLE_KEY=...
 ADMIN_EMAILS=owner@example.com
 ```
 
-The service role key is required only on the server side. Do not expose it to client components. The publishable key is used for Supabase Auth session handling, and `ADMIN_EMAILS` controls which signed-in users can view `/admin`.
+The service role key is required only on the server side. Do not expose it to client components. The publishable key is used for Supabase Auth session handling, `NEXT_PUBLIC_SITE_URL` is the canonical callback origin for admin magic links, and `ADMIN_EMAILS` controls which signed-in users can view `/admin`.
 
 ## Daily Workflow
 

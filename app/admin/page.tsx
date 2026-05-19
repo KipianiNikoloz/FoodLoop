@@ -18,7 +18,7 @@ type WaitlistSignupRow = {
 };
 
 function formatDate(value: string) {
-  return new Intl.DateTimeFormat("en", {
+  return new Intl.DateTimeFormat("ka-GE", {
     dateStyle: "medium",
     timeStyle: "short",
   }).format(new Date(value));
@@ -33,7 +33,7 @@ async function getWaitlistRows() {
     .limit(500);
 
   if (error) {
-    throw new Error("Unable to load waitlist signups.");
+    throw new Error("Waitlist signups could not be loaded.");
   }
 
   return {
@@ -57,11 +57,11 @@ export default async function AdminPage() {
       <main className="adminShell">
         <section className="adminDenied" aria-labelledby="admin-denied-title">
           <Badge variant="tomato">403</Badge>
-          <h1 id="admin-denied-title">Not authorized</h1>
-          <p>This signed-in account is not configured in the admin allowlist.</p>
+          <h1 id="admin-denied-title">წვდომა შეზღუდულია</h1>
+          <p>ეს ანგარიში ადმინისტრატორების სიაში არ არის დამატებული.</p>
           <form action={signOutAdmin}>
             <Button type="submit" variant="secondary">
-              Sign out
+              გამოსვლა
             </Button>
           </form>
         </section>
@@ -75,35 +75,35 @@ export default async function AdminPage() {
     <main className="adminShell">
       <header className="adminTopbar">
         <div>
-          <p className="adminEyebrow">FoodLoop Admin</p>
-          <h1>Received emails</h1>
+          <p className="adminEyebrow">FoodLoop ადმინი</p>
+          <h1>მიღებული ელფოსტები</h1>
         </div>
         <form action={signOutAdmin}>
           <Button type="submit" variant="secondary">
-            Sign out
+            გამოსვლა
           </Button>
         </form>
       </header>
 
-      <section className="adminStats" aria-label="Waitlist summary">
+      <section className="adminStats" aria-label="მოლოდინის სიის შეჯამება">
         <article>
-          <span>Total received</span>
+          <span>სულ მიღებული</span>
           <strong>{count}</strong>
         </article>
         <article>
-          <span>Showing newest</span>
+          <span>ნაჩვენებია უახლესი</span>
           <strong>{rows.length}</strong>
         </article>
         <article>
-          <span>Signed in as</span>
+          <span>შესული ხართ როგორც</span>
           <strong>{user.email}</strong>
         </article>
       </section>
 
       <section className="adminTableSection" aria-labelledby="admin-table-title">
         <div className="adminTableHeader">
-          <h2 id="admin-table-title">Waitlist signups</h2>
-          <Badge variant="paper">Newest first</Badge>
+          <h2 id="admin-table-title">მოლოდინის სიის ჩანაწერები</h2>
+          <Badge variant="paper">ჯერ უახლესი</Badge>
         </div>
 
         {rows.length > 0 ? (
@@ -111,11 +111,11 @@ export default async function AdminPage() {
             <table className="adminTable">
               <thead>
                 <tr>
-                  <th>Email</th>
-                  <th>Role</th>
-                  <th>Source</th>
-                  <th>Locale</th>
-                  <th>Received</th>
+                  <th>ელფოსტა</th>
+                  <th>როლი</th>
+                  <th>წყარო</th>
+                  <th>ენა</th>
+                  <th>მიღების დრო</th>
                 </tr>
               </thead>
               <tbody>
@@ -135,8 +135,8 @@ export default async function AdminPage() {
           </div>
         ) : (
           <div className="adminEmpty">
-            <h3>No emails received yet</h3>
-            <p>Waitlist signups will appear here once visitors submit the public form.</p>
+            <h3>ელფოსტები ჯერ არ მიგვიღია</h3>
+            <p>მოლოდინის სიის ჩანაწერები აქ გამოჩნდება, როცა ვიზიტორები საჯარო ფორმას შეავსებენ.</p>
           </div>
         )}
       </section>

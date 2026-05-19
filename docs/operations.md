@@ -6,15 +6,37 @@
 | --- | --- | --- |
 | `NEXT_PUBLIC_SUPABASE_URL` | Client and server | Supabase project URL. Safe to expose. |
 | `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY` | Client and server | Supabase publishable key used for Auth session handling. |
+| `NEXT_PUBLIC_SITE_URL` | Client and server | Canonical app origin used to build admin magic-link redirects. |
 | `SUPABASE_SERVICE_ROLE_KEY` | Server only | Inserts waitlist entries from the server action. Keep private. |
 | `ADMIN_EMAILS` | Server only | Comma-separated allowlist of admin emails that can view `/admin`. |
 
 ## Admin Auth Setup
 
-Configure Supabase Auth magic links for the deployed site URL and callback path:
+Set `NEXT_PUBLIC_SITE_URL` to the deployed app origin:
 
 ```text
-https://your-domain.example/auth/confirm?token_hash={{ .TokenHash }}&type=email
+https://your-domain.example
+```
+
+In Supabase Dashboard, set Auth URL Configuration:
+
+```text
+Site URL: https://your-domain.example
+Redirect URL: https://your-domain.example/auth/confirm
+```
+
+For local testing, also allow:
+
+```text
+http://localhost:3000/auth/confirm
+```
+
+In the Magic Link email template, use `RedirectTo` plus the token hash so Supabase sends users to the same origin the app requested:
+
+```html
+<a href="{{ .RedirectTo }}&token_hash={{ .TokenHash }}&type=email">
+  FoodLoop ადმინისტრაციაში შესვლა
+</a>
 ```
 
 Admins sign in at `/admin/login`. Only emails listed in `ADMIN_EMAILS` can view received waitlist rows.
@@ -45,6 +67,7 @@ flowchart TD
 | --- | --- | --- |
 | Missing service role key | Form returns a recoverable Supabase configuration error. | Confirm server environment variables. |
 | Missing publishable key | Admin login or auth callback fails. | Confirm Supabase Auth environment variables. |
+| Missing site URL | Admin magic-link sending fails in production or points to the wrong origin. | Set `NEXT_PUBLIC_SITE_URL` to the deployed app URL. |
 | Missing admin allowlist | Signed-in admins see a not-authorized state. | Confirm `ADMIN_EMAILS` includes the admin email. |
 | Migration not applied | Insert fails because `waitlist_signups` is missing. | Apply migration before deployment. |
 | Duplicate signup | User sees a duplicate state, treated as a positive result. | Expected when email already exists. |

@@ -77,13 +77,14 @@ The UI is split from the waitlist business rules. `WaitlistForm` owns the browse
    ```env
    NEXT_PUBLIC_SUPABASE_URL=...
    NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY=...
+   NEXT_PUBLIC_SITE_URL=http://localhost:3000
    SUPABASE_SERVICE_ROLE_KEY=...
    ADMIN_EMAILS=owner@example.com,ops@example.com
    ```
 
 4. Apply the Supabase migration in [`supabase/migrations`](./supabase/migrations/20260517120000_create_waitlist_signups.sql).
 
-5. Configure Supabase Auth magic links so callbacks can reach `/auth/confirm`.
+5. Configure Supabase Auth magic links so callbacks can reach `/auth/confirm`. In production, set `NEXT_PUBLIC_SITE_URL` to the deployed domain, for example `https://your-domain.com`.
 
 6. Start the app:
 

@@ -33,6 +33,12 @@ flowchart TD
 - Whitespace trimming and case normalization.
 - Rejection of missing or non-allowlisted emails.
 
+[`tests/site-url.test.ts`](../tests/site-url.test.ts) verifies:
+
+- Canonical site URL trimming.
+- Production callback origin preference for `NEXT_PUBLIC_SITE_URL`.
+- Local development fallback to the request origin.
+
 ## Commands
 
 ```bash
