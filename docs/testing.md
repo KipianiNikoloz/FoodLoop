@@ -1,6 +1,6 @@
 # Testing Guide
 
-The current test suite focuses on the waitlist core because that is where the highest-risk branching lives: validation, normalization, duplicate handling, and recoverable database failures.
+The current test suite focuses on the waitlist core and admin authorization helpers because that is where the highest-risk branching lives: validation, normalization, duplicate handling, recoverable database failures, and email allowlist checks.
 
 ## Test Pyramid
 
@@ -8,7 +8,7 @@ The current test suite focuses on the waitlist core because that is where the hi
 flowchart TD
   Manual[Manual browser QA]
   Integration[Future server action integration tests]
-  Unit[Current waitlist-core unit tests]
+  Unit[Current unit tests]
 
   Manual --> Integration
   Integration --> Unit
@@ -26,6 +26,12 @@ flowchart TD
 - Duplicate email mapping from Supabase code `23505`.
 - Recoverable insert errors.
 - Recoverable thrown client errors.
+
+[`tests/admin-auth.test.ts`](../tests/admin-auth.test.ts) verifies:
+
+- Comma-separated admin email parsing.
+- Whitespace trimming and case normalization.
+- Rejection of missing or non-allowlisted emails.
 
 ## Commands
 

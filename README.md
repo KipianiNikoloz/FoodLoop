@@ -1,6 +1,6 @@
 # FoodLoop
 
-FoodLoop is a Georgian-language Next.js landing page and waitlist experience for a neighborhood food marketplace. The page introduces the product, uses a visual market-sheet art direction, and stores early user and partner interest in Supabase.
+FoodLoop is a Georgian-language Next.js landing page, waitlist experience, and protected admin email view for a neighborhood food marketplace. The page introduces the product, uses a visual market-sheet art direction, and stores early user and partner interest in Supabase.
 
 ![FoodLoop visual concept frame](./public/ui-deck/foodloop-ui-1.png)
 
@@ -76,18 +76,24 @@ The UI is split from the waitlist business rules. `WaitlistForm` owns the browse
 
    ```env
    NEXT_PUBLIC_SUPABASE_URL=...
+   NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY=...
    SUPABASE_SERVICE_ROLE_KEY=...
+   ADMIN_EMAILS=owner@example.com,ops@example.com
    ```
 
 4. Apply the Supabase migration in [`supabase/migrations`](./supabase/migrations/20260517120000_create_waitlist_signups.sql).
 
-5. Start the app:
+5. Configure Supabase Auth magic links so callbacks can reach `/auth/confirm`.
+
+6. Start the app:
 
    ```bash
    npm run dev
    ```
 
-6. Open the printed local URL, usually `http://localhost:3000`.
+7. Open the printed local URL, usually `http://localhost:3000`.
+
+8. Visit `/admin` to sign in with an allowlisted admin email and view received waitlist emails.
 
 ## Scripts
 
@@ -118,4 +124,4 @@ Additional source imagery is in [`public/images`](./public/images) and concept f
 
 ## Current Scope
 
-The current product surface is a single landing page with two waitlist entry points. Waitlist entries are stored with an email, role, locale, source, and creation timestamp. The app currently assumes the Georgian locale (`ka`) and the `landing` source.
+The current product surface is a single landing page with two waitlist entry points plus a protected `/admin` view for operators. Waitlist entries are stored with an email, role, locale, source, and creation timestamp. The app currently assumes the Georgian locale (`ka`) and the `landing` source.

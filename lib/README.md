@@ -7,7 +7,9 @@ This folder contains shared application logic that should stay independent from 
 | File | Purpose |
 | --- | --- |
 | [`waitlist-core.ts`](./waitlist-core.ts) | Pure waitlist validation, normalization, insert orchestration, and result-state mapping. |
+| [`admin-auth.ts`](./admin-auth.ts) | Pure admin allowlist parsing and email authorization helpers. |
 | [`supabase-admin.ts`](./supabase-admin.ts) | Server-side Supabase admin client factory. |
+| [`supabase/`](./supabase) | Supabase Auth SSR client and session refresh utilities. |
 | [`utils.ts`](./utils.ts) | Shared utility helpers. |
 
 ## Waitlist Core Boundary
@@ -28,4 +30,3 @@ flowchart TD
 ```
 
 `submitWaitlistForm` receives an insert function instead of importing Supabase directly. This keeps the logic testable and makes failure modes easy to simulate.
-

@@ -1,6 +1,6 @@
 # Architecture
 
-FoodLoop uses Next.js App Router with a small server-action boundary and Supabase as the persistence layer. The most important design choice is keeping waitlist validation in `lib/waitlist-core.ts`, away from React and Supabase, so it can be tested with plain Node tests.
+FoodLoop uses Next.js App Router with a small server-action boundary and Supabase as the persistence layer. The most important design choice is keeping waitlist validation in `lib/waitlist-core.ts`, away from React and Supabase, so it can be tested with plain Node tests. The admin surface uses Supabase Auth for identity, a server-side email allowlist for authorization, and service-role reads after authorization succeeds.
 
 ## System Diagram
 
@@ -63,8 +63,12 @@ sequenceDiagram
 | [`app/page.tsx`](../app/page.tsx) | Landing page composition and product storytelling. |
 | [`components/WaitlistForm.tsx`](../components/WaitlistForm.tsx) | Client-side form state, role choice, and submit button pending state. |
 | [`app/actions/waitlist.ts`](../app/actions/waitlist.ts) | Server action that connects form submissions to Supabase. |
+| [`app/admin/page.tsx`](../app/admin/page.tsx) | Protected admin view for received waitlist emails. |
+| [`app/admin/login/page.tsx`](../app/admin/login/page.tsx) | Magic-link sign-in page for admins. |
 | [`lib/waitlist-core.ts`](../lib/waitlist-core.ts) | Email normalization, role validation, duplicate mapping, and message-state decisions. |
+| [`lib/admin-auth.ts`](../lib/admin-auth.ts) | Admin email allowlist parsing and authorization checks. |
 | [`lib/supabase-admin.ts`](../lib/supabase-admin.ts) | Server-only Supabase admin client creation. |
+| [`lib/supabase/`](../lib/supabase) | Supabase Auth SSR clients and session refresh helpers. |
 | [`supabase/migrations/20260517120000_create_waitlist_signups.sql`](../supabase/migrations/20260517120000_create_waitlist_signups.sql) | Waitlist table schema and RLS enablement. |
 
 ## State Model
@@ -89,6 +93,7 @@ The browser never receives the Supabase service role key. Form submissions go th
 flowchart LR
   Browser[Browser] -- no service key --> ServerAction[Server action]
   ServerAction -- service role key from env --> Supabase[(Supabase)]
-  Supabase --> RLS[RLS enabled on table]
+Supabase --> RLS[RLS enabled on table]
 ```
 
+Admin reads follow the same service-role boundary, but only after Supabase Auth verifies a signed-in user and `ADMIN_EMAILS` authorizes that user's email address.
