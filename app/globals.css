@@ -980,7 +980,13 @@ nav a {
 
 @media (max-width: 680px) {
   .siteHeader {
+    grid-template-columns: 1fr;
+    justify-items: center;
     padding: 12px 14px;
+  }
+
+  .brandMark {
+    justify-content: center;
   }
 
   .brandMark small {
