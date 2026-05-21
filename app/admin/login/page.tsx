@@ -64,13 +64,13 @@ export default async function AdminLoginPage({ searchParams }: AdminLoginPagePro
           FoodLoop
         </Link>
         <div>
-          <p className="adminEyebrow">Admin</p>
-          <h1 id="admin-login-title">Sign in to view waitlist emails</h1>
-          <p className="adminLead">Use the seeded admin email and password configured for this deployment.</p>
+          <p className="adminEyebrow">ადმინი</p>
+          <h1 id="admin-login-title">შედით მიღებული ელფოსტების სანახავად</h1>
+          <p className="adminLead">გამოიყენეთ ამ გარემოსთვის შექმნილი ადმინის ელფოსტა და პაროლი.</p>
         </div>
 
         <form className="adminLoginForm" action={signInAdmin}>
-          <label htmlFor="admin-email">Email</label>
+          <label htmlFor="admin-email">ელფოსტა</label>
           <Input
             id="admin-email"
             name="email"
@@ -80,14 +80,14 @@ export default async function AdminLoginPage({ searchParams }: AdminLoginPagePro
             placeholder="admin@example.com"
             required
           />
-          <label htmlFor="admin-password">Password</label>
+          <label htmlFor="admin-password">პაროლი</label>
           <Input id="admin-password" name="password" type="password" autoComplete="current-password" required />
           <AdminLoginSubmitButton />
         </form>
 
         {params.error === "invalid-credentials" ? (
           <p className="adminNotice" role="alert">
-            The email or password is incorrect.
+            ელფოსტა ან პაროლი არასწორია.
           </p>
         ) : null}
       </section>
