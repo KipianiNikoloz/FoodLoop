@@ -2,10 +2,11 @@
 
 import { useActionState } from "react";
 import { useFormStatus } from "react-dom";
-import { initialWaitlistState, joinWaitlist } from "@/app/actions/waitlist";
+import { joinWaitlist } from "@/app/actions/waitlist";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { initialWaitlistState } from "@/lib/waitlist-core";
 
 type WaitlistFormProps = {
   id: string;

@@ -1,14 +1,7 @@
 "use server";
 
 import { createSupabaseAdminClient, type WaitlistRole } from "@/lib/supabase-admin";
-import {
-  initialWaitlistState,
-  submitWaitlistForm,
-  type WaitlistFormState,
-} from "@/lib/waitlist-core";
-
-export { initialWaitlistState };
-export type { WaitlistFormState };
+import { submitWaitlistForm, type WaitlistFormState } from "@/lib/waitlist-core";
 
 export async function joinWaitlist(
   _previousState: WaitlistFormState,
