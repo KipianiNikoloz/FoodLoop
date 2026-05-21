@@ -18,6 +18,8 @@ Set `NEXT_PUBLIC_SITE_URL` to the deployed app origin:
 https://your-domain.example
 ```
 
+On Vercel, also enable automatically exposed System Environment Variables. The app can fall back to `VERCEL_PROJECT_PRODUCTION_URL`, `NEXT_PUBLIC_VERCEL_URL`, or `VERCEL_URL` if production is accidentally left with a localhost site URL, but `NEXT_PUBLIC_SITE_URL` should still be the canonical production origin.
+
 In Supabase Dashboard, set Auth URL Configuration:
 
 ```text

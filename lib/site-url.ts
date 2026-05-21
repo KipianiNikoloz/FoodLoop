@@ -21,19 +21,37 @@ export function isLocalhostUrl(value: string | null) {
   }
 }
 
+function withProtocol(value: string | null) {
+  if (!value) {
+    return null;
+  }
+
+  return /^https?:\/\//i.test(value) ? value : `https://${value}`;
+}
+
+function getVercelDeploymentUrl() {
+  return (
+    normalizeSiteUrl(withProtocol(process.env.VERCEL_PROJECT_PRODUCTION_URL ?? null) ?? undefined) ??
+    normalizeSiteUrl(withProtocol(process.env.NEXT_PUBLIC_VERCEL_URL ?? null) ?? undefined) ??
+    normalizeSiteUrl(withProtocol(process.env.VERCEL_URL ?? null) ?? undefined)
+  );
+}
+
 export function getConfiguredSiteUrl(fallbackOrigin?: string | null, nodeEnv = process.env.NODE_ENV) {
   const configuredSiteUrl = normalizeSiteUrl(process.env.NEXT_PUBLIC_SITE_URL);
   const normalizedFallbackOrigin = normalizeSiteUrl(fallbackOrigin ?? undefined);
+  const vercelDeploymentUrl = getVercelDeploymentUrl();
 
-  if (
-    configuredSiteUrl &&
-    (nodeEnv !== "production" || !isLocalhostUrl(configuredSiteUrl) || !normalizedFallbackOrigin)
-  ) {
+  if (configuredSiteUrl && (nodeEnv !== "production" || !isLocalhostUrl(configuredSiteUrl))) {
     return configuredSiteUrl;
   }
 
-  if (normalizedFallbackOrigin) {
+  if (normalizedFallbackOrigin && (nodeEnv !== "production" || !isLocalhostUrl(normalizedFallbackOrigin))) {
     return normalizedFallbackOrigin;
+  }
+
+  if (nodeEnv === "production" && vercelDeploymentUrl) {
+    return vercelDeploymentUrl;
   }
 
   if (nodeEnv !== "production") {
