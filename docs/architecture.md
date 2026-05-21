@@ -64,7 +64,7 @@ sequenceDiagram
 | [`components/WaitlistForm.tsx`](../components/WaitlistForm.tsx) | Client-side form state, role choice, and submit button pending state. |
 | [`app/actions/waitlist.ts`](../app/actions/waitlist.ts) | Server action that connects form submissions to Supabase. |
 | [`app/admin/page.tsx`](../app/admin/page.tsx) | Protected admin view for received waitlist emails. |
-| [`app/admin/login/page.tsx`](../app/admin/login/page.tsx) | Magic-link sign-in page for admins. |
+| [`app/admin/login/page.tsx`](../app/admin/login/page.tsx) | Password sign-in page for seeded admin users. |
 | [`lib/waitlist-core.ts`](../lib/waitlist-core.ts) | Email normalization, role validation, duplicate mapping, and message-state decisions. |
 | [`lib/admin-auth.ts`](../lib/admin-auth.ts) | Admin email allowlist parsing and authorization checks. |
 | [`lib/supabase-admin.ts`](../lib/supabase-admin.ts) | Server-only Supabase admin client creation. |

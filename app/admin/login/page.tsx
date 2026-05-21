@@ -1,9 +1,7 @@
 import Link from "next/link";
-import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 import { Input } from "@/components/ui/input";
 import { isAdminEmail } from "@/lib/admin-auth";
-import { getConfiguredSiteUrl } from "@/lib/site-url";
 import { createClient } from "@/lib/supabase/server";
 import { AdminLoginSubmitButton } from "./SubmitButton";
 
@@ -11,7 +9,6 @@ export const dynamic = "force-dynamic";
 
 type AdminLoginPageProps = {
   searchParams: Promise<{
-    sent?: string;
     error?: string;
     email?: string;
   }>;
@@ -19,6 +16,10 @@ type AdminLoginPageProps = {
 
 function normalizeEmail(value: FormDataEntryValue | null) {
   return String(value ?? "").trim().toLowerCase();
+}
+
+function normalizePassword(value: FormDataEntryValue | null) {
+  return String(value ?? "");
 }
 
 function isValidEmail(email: string) {
@@ -30,55 +31,27 @@ function getLoginRedirect(params: Record<string, string>) {
   return `/admin/login?${searchParams.toString()}`;
 }
 
-function getRequestOrigin(requestHeaders: Headers) {
-  const origin = requestHeaders.get("origin");
-
-  if (origin) {
-    return origin;
-  }
-
-  const host = requestHeaders.get("x-forwarded-host") ?? requestHeaders.get("host");
-  const protocol = requestHeaders.get("x-forwarded-proto") ?? "https";
-
-  return host ? `${protocol}://${host}` : null;
-}
-
-async function sendMagicLink(formData: FormData) {
+async function signInAdmin(formData: FormData) {
   "use server";
 
   const email = normalizeEmail(formData.get("email"));
+  const password = normalizePassword(formData.get("password"));
 
-  if (!isValidEmail(email)) {
-    redirect(getLoginRedirect({ error: "invalid-email", email }));
+  if (!isValidEmail(email) || !password || !isAdminEmail(email)) {
+    redirect(getLoginRedirect({ error: "invalid-credentials", email }));
   }
 
-  if (isAdminEmail(email)) {
-    let sendFailed = false;
+  const supabase = await createClient();
+  const { error } = await supabase.auth.signInWithPassword({
+    email,
+    password,
+  });
 
-    try {
-      const requestHeaders = await headers();
-      const siteUrl = getConfiguredSiteUrl(getRequestOrigin(requestHeaders));
-      const supabase = await createClient();
-      const { error } = await supabase.auth.signInWithOtp({
-        email,
-        options: {
-          emailRedirectTo: `${siteUrl}/auth/confirm?next=/admin`,
-        },
-      });
-
-      if (error) {
-        sendFailed = true;
-      }
-    } catch {
-      sendFailed = true;
-    }
-
-    if (sendFailed) {
-      redirect(getLoginRedirect({ error: "send-failed", email }));
-    }
+  if (error) {
+    redirect(getLoginRedirect({ error: "invalid-credentials", email }));
   }
 
-  redirect(`/admin/login?sent=1&email=${encodeURIComponent(email)}`);
+  redirect("/admin");
 }
 
 export default async function AdminLoginPage({ searchParams }: AdminLoginPageProps) {
@@ -91,13 +64,13 @@ export default async function AdminLoginPage({ searchParams }: AdminLoginPagePro
           FoodLoop
         </Link>
         <div>
-          <p className="adminEyebrow">ადმინი</p>
-          <h1 id="admin-login-title">შედით მიღებული ელფოსტების სანახავად</h1>
-          <p className="adminLead">შეიყვანეთ ადმინისტრატორის ელფოსტა. Supabase გამოგიგზავნით უსაფრთხო შესვლის ბმულს.</p>
+          <p className="adminEyebrow">Admin</p>
+          <h1 id="admin-login-title">Sign in to view waitlist emails</h1>
+          <p className="adminLead">Use the seeded admin email and password configured for this deployment.</p>
         </div>
 
-        <form className="adminLoginForm" action={sendMagicLink}>
-          <label htmlFor="admin-email">ელფოსტა</label>
+        <form className="adminLoginForm" action={signInAdmin}>
+          <label htmlFor="admin-email">Email</label>
           <Input
             id="admin-email"
             name="email"
@@ -107,30 +80,14 @@ export default async function AdminLoginPage({ searchParams }: AdminLoginPagePro
             placeholder="admin@example.com"
             required
           />
+          <label htmlFor="admin-password">Password</label>
+          <Input id="admin-password" name="password" type="password" autoComplete="current-password" required />
           <AdminLoginSubmitButton />
         </form>
 
-        {params.sent ? (
-          <p className="adminNotice adminNotice-positive" role="status">
-            თუ ეს ელფოსტა ადმინისტრატორად არის დამატებული, შესვლის ბმული უკვე გაიგზავნა. შეამოწმეთ შემოსული წერილები.
-          </p>
-        ) : null}
-
-        {params.error === "invalid-email" ? (
+        {params.error === "invalid-credentials" ? (
           <p className="adminNotice" role="alert">
-            შეიყვანეთ სწორი ელფოსტის მისამართი.
-          </p>
-        ) : null}
-
-        {params.error === "send-failed" ? (
-          <p className="adminNotice" role="alert">
-            ბმულის გაგზავნა ვერ მოხერხდა. შეამოწმეთ Supabase-ის პარამეტრები და სცადეთ თავიდან.
-          </p>
-        ) : null}
-
-        {params.error === "auth" ? (
-          <p className="adminNotice" role="alert">
-            შესვლის ბმული არასწორია ან ვადა გაუვიდა. მოითხოვეთ ახალი ბმული.
+            The email or password is incorrect.
           </p>
         ) : null}
       </section>

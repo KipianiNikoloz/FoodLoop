@@ -7,9 +7,9 @@ The system SHALL require Supabase Auth authentication before displaying the admi
 - **WHEN** a visitor without a valid Supabase Auth session opens `/admin`
 - **THEN** the system redirects the visitor to `/admin/login`
 
-#### Scenario: Admin signs in with magic link
-- **WHEN** an admin submits a valid email address on `/admin/login`
-- **THEN** the system requests a Supabase Auth magic link for that email address
+#### Scenario: Admin signs in with password
+- **WHEN** an allowlisted admin submits valid seeded credentials on `/admin/login`
+- **THEN** the system creates a Supabase Auth session and redirects to `/admin`
 
 ### Requirement: Admin authorization
 The system SHALL only display waitlist email data to authenticated users whose email address is listed in the server-side admin allowlist.

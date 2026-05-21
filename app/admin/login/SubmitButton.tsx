@@ -8,7 +8,7 @@ export function AdminLoginSubmitButton() {
 
   return (
     <Button type="submit" disabled={pending}>
-      {pending ? "იგზავნება..." : "მაგიური ბმულის გაგზავნა"}
+      {pending ? "Signing in..." : "Sign in"}
     </Button>
   );
 }

@@ -6,8 +6,8 @@
 
 ## 2. Admin Routes
 
-- [x] 2.1 Implement `/admin/login` magic-link sign-in.
-- [x] 2.2 Implement `/auth/confirm` OTP callback route.
+- [x] 2.1 Implement `/admin/login` password sign-in.
+- [x] 2.2 Add admin account seeding script.
 - [x] 2.3 Implement protected `/admin` waitlist email list and sign-out action.
 
 ## 3. Documentation and Verification

@@ -1,6 +1,6 @@
 # Tests
 
-The test suite targets framework-light business logic in `lib/`, including waitlist validation, admin authorization, and canonical site URL handling.
+The test suite targets framework-light business logic in `lib/`, including waitlist validation and admin authorization.
 
 ## Test Flow
 
@@ -8,10 +8,8 @@ The test suite targets framework-light business logic in `lib/`, including waitl
 flowchart LR
   Test[waitlist-core.test.ts]
   AdminTest[admin-auth.test.ts]
-  SiteUrlTest[site-url.test.ts]
   Core[lib/waitlist-core.ts]
   Admin[lib/admin-auth.ts]
-  SiteUrl[lib/site-url.ts]
   FakeInsert[Fake insert function]
   State[WaitlistFormState]
 
@@ -19,7 +17,6 @@ flowchart LR
   Test --> FakeInsert
   Core --> State
   AdminTest --> Admin
-  SiteUrlTest --> SiteUrl
 ```
 
 ## Running Tests

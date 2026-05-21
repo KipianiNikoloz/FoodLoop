@@ -19,12 +19,18 @@ Add these values to `.env.local`:
 ```env
 NEXT_PUBLIC_SUPABASE_URL=...
 NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY=...
-NEXT_PUBLIC_SITE_URL=http://localhost:3000
 SUPABASE_SERVICE_ROLE_KEY=...
 ADMIN_EMAILS=owner@example.com
+ADMIN_PASSWORD=change-this-long-password
 ```
 
-The service role key is required only on the server side. Do not expose it to client components. The publishable key is used for Supabase Auth session handling, `NEXT_PUBLIC_SITE_URL` is the canonical callback origin for admin magic links, and `ADMIN_EMAILS` controls which signed-in users can view `/admin`.
+The service role key and admin password are required only on the server side. Do not expose them to client components. The publishable key is used for Supabase Auth session handling, `ADMIN_EMAILS` controls which signed-in users can view `/admin`, and `ADMIN_PASSWORD` is used by `npm run seed:admins` to create or rotate those admin passwords.
+
+After configuring the environment, seed the admin accounts:
+
+```bash
+npm run seed:admins
+```
 
 ## Daily Workflow
 
