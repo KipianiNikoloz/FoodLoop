@@ -1,6 +1,6 @@
 # Tests
 
-The test suite targets framework-light business logic in `lib/`, including waitlist validation and admin authorization.
+The test suite targets framework-light business logic in `lib/`, including shared email validation, waitlist validation, and admin authorization.
 
 ## Test Flow
 
@@ -8,8 +8,10 @@ The test suite targets framework-light business logic in `lib/`, including waitl
 flowchart LR
   Test[waitlist-core.test.ts]
   AdminTest[admin-auth.test.ts]
+  EmailTest[email.test.ts]
   Core[lib/waitlist-core.ts]
   Admin[lib/admin-auth.ts]
+  Email[lib/email.ts]
   FakeInsert[Fake insert function]
   State[WaitlistFormState]
 
@@ -17,6 +19,7 @@ flowchart LR
   Test --> FakeInsert
   Core --> State
   AdminTest --> Admin
+  EmailTest --> Email
 ```
 
 ## Running Tests

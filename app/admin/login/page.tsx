@@ -2,6 +2,7 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 import { Input } from "@/components/ui/input";
 import { isAdminEmail } from "@/lib/admin-auth";
+import { isValidEmail, normalizeEmail } from "@/lib/email";
 import { createClient } from "@/lib/supabase/server";
 import { AdminLoginSubmitButton } from "./SubmitButton";
 
@@ -14,16 +15,8 @@ type AdminLoginPageProps = {
   }>;
 };
 
-function normalizeEmail(value: FormDataEntryValue | null) {
-  return String(value ?? "").trim().toLowerCase();
-}
-
 function normalizePassword(value: FormDataEntryValue | null) {
   return String(value ?? "");
-}
-
-function isValidEmail(email: string) {
-  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
 }
 
 function getLoginRedirect(params: Record<string, string>) {

@@ -37,12 +37,14 @@ npm run seed:admins
 ```mermaid
 flowchart LR
   Edit[Edit source]
-  Typecheck[npm run lint]
+  Lint[npm run lint]
+  Typecheck[npm run typecheck]
   Test[npm test]
   Build[npm run build]
   Review[Browser/visual review]
 
-  Edit --> Typecheck
+  Edit --> Lint
+  Lint --> Typecheck
   Typecheck --> Test
   Test --> Build
   Build --> Review

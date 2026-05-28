@@ -107,7 +107,9 @@ The UI is split from the waitlist business rules. `WaitlistForm` owns the browse
 | `npm run dev` | Start the Next.js dev server. |
 | `npm run build` | Build the production app. |
 | `npm run start` | Serve the production build. |
-| `npm run lint` | Run TypeScript type checking with `tsc --noEmit`. |
+| `npm run lint` | Run ESLint checks. |
+| `npm run typecheck` | Run TypeScript type checking with `tsc --noEmit`. |
+| `npm run check:copy` | Check app-facing source for common mojibake markers. |
 | `npm run seed:admins` | Create or update Supabase Auth users for every email in `ADMIN_EMAILS`. |
 | `npm test` | Run Node tests in `tests/*.test.ts`. |
 

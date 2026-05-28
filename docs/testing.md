@@ -1,6 +1,6 @@
 # Testing Guide
 
-The current test suite focuses on the waitlist core and admin authorization helpers because that is where the highest-risk branching lives: validation, normalization, duplicate handling, recoverable database failures, and email allowlist checks.
+The current test suite focuses on shared email validation, the waitlist core, and admin authorization helpers because that is where the highest-risk branching lives: validation, normalization, duplicate handling, recoverable database failures, and email allowlist checks.
 
 ## Test Pyramid
 
@@ -33,11 +33,18 @@ flowchart TD
 - Whitespace trimming and case normalization.
 - Rejection of missing or non-allowlisted emails.
 
+[`tests/email.test.ts`](../tests/email.test.ts) verifies:
+
+- Shared email normalization.
+- Basic email shape validation.
+
 ## Commands
 
 ```bash
-npm test
 npm run lint
+npm run typecheck
+npm test
+npm run check:copy
 npm run build
 ```
 

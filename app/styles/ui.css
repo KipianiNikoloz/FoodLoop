@@ -1,0 +1,196 @@
+.waitlistForm {
+  display: grid;
+  gap: 10px;
+}
+
+.uiRadioGroup {
+  border: 0;
+  display: grid;
+  gap: 8px;
+  grid-template-columns: 1fr 1fr;
+  margin: 0;
+  min-inline-size: 0;
+  padding: 0;
+}
+
+.uiRadioItem {
+  cursor: pointer;
+  min-width: 0;
+}
+
+.uiRadioItem input {
+  opacity: 0;
+  position: absolute;
+}
+
+.uiRadioItem span {
+  align-items: center;
+  background: var(--paper-warm);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  color: var(--herb-dark);
+  display: flex;
+  font-size: 14px;
+  font-weight: 900;
+  justify-content: center;
+  min-height: 46px;
+  padding: 10px 12px;
+  text-align: center;
+}
+
+.uiRadioItem input:checked + span {
+  background: var(--herb);
+  border-color: var(--herb);
+  color: var(--white);
+}
+
+.emailRow {
+  display: grid;
+  gap: 10px;
+  grid-template-columns: minmax(0, 1fr) auto;
+}
+
+.uiInput {
+  background: var(--white);
+  border: 1px solid rgba(36, 35, 33, 0.18);
+  border-radius: var(--radius);
+  color: var(--ink);
+  min-height: 54px;
+  min-width: 0;
+  padding: 0 16px;
+  width: 100%;
+}
+
+.uiInput::placeholder {
+  color: rgba(108, 98, 85, 0.72);
+}
+
+.uiButton {
+  align-items: center;
+  border: 1px solid transparent;
+  border-radius: var(--radius);
+  cursor: pointer;
+  display: inline-flex;
+  font-weight: 950;
+  justify-content: center;
+  letter-spacing: 0;
+  min-height: 54px;
+  padding: 0 22px;
+  text-align: center;
+  transition: transform 160ms ease, box-shadow 160ms ease, background 160ms ease;
+  white-space: nowrap;
+}
+
+.uiButton-primary {
+  background: var(--tomato);
+  box-shadow: 0 10px 24px rgba(201, 41, 32, 0.18);
+  color: var(--white);
+}
+
+.uiButton-secondary {
+  background: var(--herb);
+  color: var(--white);
+}
+
+.uiButton-outline {
+  background: transparent;
+  border-color: currentColor;
+  color: var(--white);
+}
+
+.uiButton:hover {
+  transform: translateY(-1px);
+}
+
+.uiButton:disabled {
+  cursor: wait;
+  opacity: 0.72;
+  transform: none;
+}
+
+.formMessage {
+  color: var(--muted);
+  font-size: 13px;
+  margin: 0 2px;
+}
+
+.formMessage-positive {
+  color: var(--herb);
+  font-weight: 900;
+}
+
+.uiBadge {
+  border-radius: 7px;
+  display: inline-flex;
+  font-size: 12px;
+  font-weight: 950;
+  line-height: 1;
+  padding: 8px 10px;
+  text-transform: uppercase;
+}
+
+.uiBadge-marigold {
+  background: var(--marigold);
+  color: var(--ink);
+}
+
+.uiBadge-tomato {
+  background: var(--tomato);
+  color: var(--white);
+}
+
+.uiBadge-herb {
+  background: var(--herb);
+  color: var(--white);
+}
+
+.uiBadge-paper {
+  background: var(--paper-warm);
+  color: var(--herb-dark);
+}
+
+.uiCard {
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+
+.uiCardHeader {
+  padding: 18px 18px 10px;
+}
+
+.uiCardTitle {
+  font-size: 20px;
+}
+
+.uiCardDescription {
+  color: var(--muted);
+  margin: 8px 0 0;
+}
+
+.uiCardContent {
+  align-items: center;
+  border-top: 1px solid var(--line);
+  display: flex;
+  justify-content: space-between;
+  margin: 0 18px;
+  padding: 12px 0 18px;
+}
+
+.uiCardContent span:first-child {
+  color: var(--herb-dark);
+  font-weight: 900;
+}
+
+@media (max-width: 680px) {
+  .emailRow,
+  .uiRadioGroup {
+    grid-template-columns: 1fr;
+  }
+
+  .uiButton {
+    width: 100%;
+    white-space: normal;
+  }
+}

@@ -1,4 +1,5 @@
 import type { WaitlistRole } from "@/lib/supabase-admin";
+import { isValidEmail, normalizeEmail } from "@/lib/email";
 
 export type WaitlistFormState = {
   status: "idle" | "success" | "duplicate" | "error";
@@ -21,16 +22,8 @@ export const initialWaitlistState: WaitlistFormState = {
   message: "შეიყვანეთ ელფოსტა და აირჩიეთ როლი.",
 };
 
-function normalizeEmail(value: FormDataEntryValue | null) {
-  return String(value ?? "").trim().toLowerCase();
-}
-
 function parseRole(value: FormDataEntryValue | null): WaitlistRole | null {
   return value === "user" || value === "partner" ? value : null;
-}
-
-function isValidEmail(email: string) {
-  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
 }
 
 export async function submitWaitlistForm(

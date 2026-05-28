@@ -1,6 +1,6 @@
 "use server";
 
-import { createSupabaseAdminClient, type WaitlistRole } from "@/lib/supabase-admin";
+import { createSupabaseAdminClient } from "@/lib/supabase-admin";
 import { submitWaitlistForm, type WaitlistFormState } from "@/lib/waitlist-core";
 
 export async function joinWaitlist(
@@ -17,7 +17,7 @@ export async function joinWaitlist(
       const supabase = createSupabaseAdminClient();
       const result = await supabase.from("waitlist_signups").insert({
         email,
-        role: role as WaitlistRole,
+        role,
         locale: "ka",
         source: "landing",
       });

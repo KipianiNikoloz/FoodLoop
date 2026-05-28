@@ -36,7 +36,8 @@ flowchart TD
   Env[Set environment variables]
   Migration[Apply Supabase migration]
   Seed[Seed admin accounts]
-  Typecheck[npm run lint]
+  Lint[npm run lint]
+  Typecheck[npm run typecheck]
   Tests[npm test]
   Build[npm run build]
   Smoke[Submit test waitlist entry]
@@ -44,7 +45,8 @@ flowchart TD
 
   Env --> Migration
   Migration --> Seed
-  Seed --> Typecheck
+  Seed --> Lint
+  Lint --> Typecheck
   Typecheck --> Tests
   Tests --> Build
   Build --> Smoke
